@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 使用 <script> 或 <template> 标签来定义组件的 HTML 模板，可以使 HTML 代码和 JS 代码分离，便于阅读和维护 -->
+    <!-- 使用 script 标签 -->
+    <title>use-script-tag</title>
+</head>
+
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+
+    <!-- 
+        使用 <script> 标签时，type 指定为 text/x-template，告诉浏览器这不是一段 js 脚本，
+            浏览器在解析 HTML 文档时便会忽略 <script> 标签内定义的内容。
+    -->
+    <script type="text/x-template" id="myComponent">
+        <div>This is a component!</div>
+    </script>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    // template 选项现在不再是 HTML 元素，而是一个模板 id，Vue.js 根据这个 id 查找对应的元素，
+    // 然后将这个元素内的 HTML 作为模板进行编译。
+    Vue.component('my-component', {
+        template: '#myComponent'
+    })
+
+    new Vue({
+        el: "#app"
+    })
+</script>
+
+</html>

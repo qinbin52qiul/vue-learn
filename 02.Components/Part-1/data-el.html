@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-el</title>
+</head>
+
+<body>
+    <div id="app">
+        <my-component></my-component>
+
+        <my-component></my-component>
+    </div>
+    <template id="myComponent">
+        <p>
+            <input type="text" v-model='a' /> {{ a }}
+        </p>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    // Vue.js 规定：在定义组件的选项时，data 和 el 选项必须使用函数。
+    Vue.component('my-component', {
+        data: function () {
+            return {
+                a: 1
+            }
+        }
+    })
+
+    new Vue({
+        el: "#app"
+    })
+</script>
+
+</html>

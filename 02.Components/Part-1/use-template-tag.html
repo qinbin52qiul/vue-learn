@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 使用 <script> 或 <template> 标签来定义组件的 HTML 模板，可以使 HTML 代码和 JS 代码分离，便于阅读和维护 -->
+    <!-- 使用 <template> 标签 -->
+    <title>use-template-tag</title>
+</head>
+
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    <template id="myComponent">
+        <div>This is a component!</div>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('my-component', {
+        template: "#myComponent"
+    })
+
+    new Vue({
+        el: "#app"
+    })
+</script>
+
+</html>

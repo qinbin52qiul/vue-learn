@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 使用选项对象的 components 属性实现局部注册 -->
+    <title>local-registration</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 3、my-component 只能在 #app 下使用 -->
+        <my-component></my-component>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    // 1、创建一个组件构造器
+    var myComponent = Vue.extend({
+        template: "<div>This is my first component!</div>"
+    })
+
+    new Vue({
+        el: '#app',
+        components: {
+            // 2、将 myComponent 组件注册到 Vue 实例下
+            'my-component': myComponent
+        }
+    })
+</script>
+
+</html>
