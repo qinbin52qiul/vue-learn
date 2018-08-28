@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>simple-demo</title>
+    <link rel="stylesheet" href="css/demo.css" />
+</head>
+
+<body>
+    <div id="app">
+        <fieldset>
+            <legend>
+                Create New Person
+            </legend>
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" v-model="newPerson.name" />
+            </div>
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="text" v-model="newPerson.age" />
+            </div>
+            <div class="form-group">
+                <label>Sex:</label>
+                <select v-model="newPerson.sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label></label>
+                <!-- v-on 指令缩写为 @ 符号 -->
+                <button @click="createPerson">Create</button>
+            </div>
+        </fieldset>
+
+        <table>
+            <thead>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                <tr v-for="(person, index) in people">
+                    <td>{{ person.name }}</td>
+                    <td>{{ person.age }}</td>
+                    <td>{{ person.sex }}</td>
+                    <!-- v-bind 指令缩写为冒号 -->
+                    <td :class="'text-center'">
+                        <!-- Vue2.x 移除了 $index 和 $key 这两个隐式声明变量，在 v-for 中显式定义 -->
+                        <!-- <button @click="deletePerson($index)">Delete</button> -->
+                        <button @click="deletePerson(index)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            newPerson: {
+                name: 'None',
+                age: 0,
+                sex: 'Male'
+            },
+            people: [{
+                name: 'Jack',
+                age: 27,
+                sex: 'Female'
+            }, {
+                name: 'Bill',
+                age: 24,
+                sex: 'Male'
+            }, {
+                name: 'Tracy',
+                age: 32,
+                sex: 'Female'
+            }, {
+                name: 'Chris',
+                age: 28,
+                sex: 'Male'
+            }]
+        },
+        methods: {
+            createPerson: function () {
+                this.people.push(this.newPerson);
+                // 添加玩 newPerson 对象之后，重置 newPerson 对象
+                this.newPerson = {
+                    name: 'None',
+                    age: 0,
+                    sex: 'Male'
+                }
+            },
+            deletePerson: function (index) {
+                // 删除一个数组元素
+                this.people.splice(index, 1);
+            }
+        }
+    })
+</script>
+
+</html>

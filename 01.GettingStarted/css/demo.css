@@ -1,5 +1,5 @@
 * {
-	margin: 5px;
+	margin: 0;
 	padding: 0;
 	box-sizing: border-box
 }
@@ -22,6 +22,7 @@ th {
 }
 
 table {
+	margin-top: 10px;
 	width: 100%
 }
 
@@ -80,7 +81,7 @@ button:hover{
 
 #app {
 	margin: 0 auto;
-	max-width: 500px
+	max-width: 640px
 }
 
 .form-group {

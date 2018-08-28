@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>v-on</title>
+</head>
+
+<body>
+    <!-- 
+        v-on 指令用于给监听 DOM 事件，语法和 v-bind 类似，
+        例如监听 <a> 元素的点击事件：<a v-on:click="doSomething">
+        两种调用方式：1、绑定一个方法（让事件指向方法的引用），2、使用内联语句。
+     -->
+    <div id="app">
+        <p>
+            <input type="text" v-model="message">
+        </p>
+        <p>
+            <!-- click 事件直接绑定一个方法 -->
+            <button v-on:click="greet">Greet</button>
+        </p>
+        <p>
+            <!-- click 事件使用内联语句 -->
+            <button v-on:click="say('Hi')">Hi</button>
+        </p>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello, Vue.js!'
+        },
+        // 在 methods 对象中定义方法
+        methods: {
+            greet: function () {
+                // 方法内 this 指向 vm
+                alert(this.message)
+            },
+            say: function (msg) {
+                alert(msg)
+            }
+        }
+    })
+</script>
+
+</html>
