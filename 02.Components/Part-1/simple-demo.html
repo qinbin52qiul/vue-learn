@@ -20,15 +20,22 @@
         <table>
             <thead>
                 <tr>
-                    <th v-for="col in colnums">
+                    <th v-for="(col,index) in colnums">
+                        <!-- {{ col }} -->
                         {{ col | capitalize }}
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="entry in data | filterBy filterKey">
-                    <td v-for="col in colnums">
-                        {{ entry[col] }}
+                <tr v-for="entry in filterDatas">
+                    <td>
+                        {{ entry.name }}
+                    </td>
+                    <td>
+                        {{ entry.age }}
+                    </td>
+                    <td>
+                        {{ entry.sex }}
                     </td>
                 </tr>
             </tbody>
@@ -43,6 +50,23 @@
             data: Array,
             colnums: Array,
             filterKey: String
+        },
+        // 在组件选项中自定义过滤器：首字母大写
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+        computed: {
+            // 自定义过滤器：按名字进行模糊搜索
+            filterDatas: function () {
+                var self = this;
+                return self.data.filter(function (entry) {
+                    return entry.name.indexOf(self.filterKey) !== -1;
+                })
+            }
         }
     })
 
