@@ -3,14 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- prop 的绑定类型：单向绑定 -->
+    <!-- prop 的绑定类型：单次绑定 -->
     <title>once-bind-props</title>
     <link rel="stylesheet" href="css/demo.css" />
 </head>
 
 <body>
     <div id="app">
-        <!-- 修改了父组件的数据，同时影响了子组件。 -->
         <table>
             <tr>
                 <th colspan="3">父组件数据</td>
@@ -30,11 +29,14 @@
                 </td>
             </tr>
         </table>
-        <my-component v-bind:my-name='name' v-bind:my-age="age">
+        <!-- 
+            使用 .once 显式地指定单次绑定，单次绑定在建立之后不会同步之后的变化，
+            即使父组件修改了数据，也不会传导给子组件。
+         -->
+        <my-component v-bind:my-name.once='name' v-bind:my-age.once="age">
 
         </my-component>
     </div>
-    <!-- 修改了子组件的数据，没有影响父组件的数据。 -->
     <template id="myComponent">
         <table>
             <tr>
