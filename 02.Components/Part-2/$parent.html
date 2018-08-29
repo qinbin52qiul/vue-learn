@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>子组件访问父组件$parent</title>
+    <style>
+        #app {
+            max-width: 640px;
+            margin: 50px auto;
+        }
+
+        #parent-component,
+        #child-component {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <parent-component></parent-component>
+    </div>
+
+    <!-- 父组件 HTML模板 -->
+    <template id="parent-component">
+        <child-component></child-component>
+    </template>
+
+    <!-- 子组件 HTML模板 -->
+    <template id="child-component">
+        <h2>This is a child component!</h2>
+        <button v-on:click="showParentComponentData">显示父组件的数据</button>
+    </template>
+
+    <script src="js/vue.js"></script>
+    <script>
+        Vue.component('parent-component', {
+            template: '#parent-component',
+            components: {
+                'child-component': {
+                    template: '#child-component',
+                    methods: {
+                        showParentComponentData: function () {
+                            alert(this.$parent.msg)
+                        }
+                    }
+                }
+            },
+            data: function () {
+                return {
+                    msg: "Parent component message!"
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

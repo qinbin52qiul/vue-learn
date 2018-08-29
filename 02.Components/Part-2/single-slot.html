@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>单个 Slot</title>
+    <style type="text/css">
+        .content {
+            margin: 30px auto;
+            max-width: 500px;
+            border: 1px solid #ccc;
+        }
+
+        #myComponent {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-component>
+            <h1>Hello Vue.js!</h1>
+        </my-component>
+
+        <my-component>
+
+        </my-component>
+    </div>
+    <template id="myComponent">
+        <div class="content">
+            <h2>This is a component!</h2>
+            <slot>如果没有分发内容，则显示 solt 中的内容</slot>
+            <p>Say something...</p>
+        </div>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('my-component', {
+        template: "#myComponent"
+    })
+
+    new Vue({
+        el: '#app'
+    })
+</script>
+
+</html>
