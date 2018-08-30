@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div id='app'>
+        <div class="container">
+            <div class="form-group">
+                <label>Search</label>
+                <input type="text" class="search-input" v-model="searchQuery">
+            </div>
+        </div>
+
+        <div class="container">
+            <!--接收根组件上定义的数据-->
+            <simple :data-list='people' :colums='colums' :search-key='searchQuery'>
+
+            </simple>
+        </div>
+    </div>
+
+
+    <template id="simple">
+
+        <table>
+            <thead>
+                <tr>
+                    <th v-for="col in colums">
+                        {{col.name|capitalize}}
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <!-- 表体，从 people 绑定的 dataList里 面取数据 -->
+
+            <tbody>
+                <!-- filteredData 过滤数据的方法 -->
+                <tr v-for="(item,index) in filteredData">
+                    <!-- 从 columns 取数据，判断是否有主键，有主键就显示编辑信息；没有就直接显示 -->
+                    <!-- 此处注意columns里的属性的值col.name，正好要是dataList里的entry的key，所以通过item[col.name]去获取值 -->
+                    <td v-for="col in colums">
+                        <!--把第一行中的值，当做表体中的键来查找数据-->
+                        {{item[col.name]}}
+                    </td>
+                    <td class="text-center">
+                        <button @click="deleteItem(index)">delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+    </template>
+
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("simple", {
+            template: '#simple',
+
+            props: ['dataList', 'colums', 'searchKey'],
+            methods: {
+                deleteItem: function (index) {
+                    console.log(this)
+                    // splice删除一个元素，返回删除之后的数组
+                    this.dataList.splice(index, 1);
+                }
+            },
+            filters: {
+                capitalize: function (value) {
+                    if (!value) return ''
+                    value = value.toString()
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+                }
+            },
+            computed: {
+                filteredData: function () {
+                    var self = this;
+                    return self.dataList.filter(function (item) {
+                        return item.name.indexOf(self.searchKey) !== -1;
+                    })
+                }
+            }
+        });
+        var demo = new Vue({
+            el: '#app',
+            data: {
+                searchQuery: '',
+                colums: [{
+                    name: 'name'
+                }, {
+                    name: 'age'
+                }, {
+                    name: 'sex'
+                }],
+                people: [{
+                    name: 'Jack',
+                    age: 25,
+                    sex: 'Male'
+                }, {
+                    name: 'Bill',
+                    age: 32,
+                    sex: 'Male'
+                }, {
+                    name: 'Tracy',
+                    age: 26,
+                    sex: 'Female'
+                }, {
+                    name: 'Chirs',
+                    age: 29,
+                    sex: 'Male'
+                }, {
+                    name: 'Lee',
+                    age: 23,
+                    sex: 'Female'
+                }, ]
+            }
+        });
+    </script>
+
+</body>
+
+</html>
