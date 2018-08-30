@@ -25,10 +25,12 @@
 
     <!-- 父组件 HTML模板 -->
     <template id="parent-component">
-        <!-- 在子组件上使用 v-ref 指令，给子组件指定一个索引 ID -->
-        <child-component1 v-ref:cc1></child-component1>
-        <child-component2 v-ref:cc2></child-component2>
-        <button v-on:click="showChildComponentData">显示子组件的数据</button>
+        <div>
+            <!-- 在子组件上使用 v-ref 指令，给子组件指定一个索引 ID -->
+            <child-component1 ref="cc1"></child-component1>
+            <child-component2 ref="cc2"></child-component2>
+            <button v-on:click="showChildComponentData">显示子组件的数据</button>
+        </div>
     </template>
 
     <!-- 子组件1 HTML模板 -->
@@ -66,8 +68,8 @@
             methods: {
                 showChildComponentData: function () {
                     // 在父组件中，通过 $refs.索引ID 访问子组件的实例
-                    alert(this.$refs.cc1.msg);
-                    alert(this.$refs.cc2.msg);
+                    alert(this.$refs.cc1);
+                    alert(this.$refs.cc2);
                 }
             }
         })
