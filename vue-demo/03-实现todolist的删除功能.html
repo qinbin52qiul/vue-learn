@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>简单todolist</title>
+    <script src="./vue.js"></script>
+</head>
+<!-- 
+     父子组件交互
+    （1）：父组件通过 prop 向子组件传值 子组件获得父组件传来的内容（content）和索引（index）。
+    （2）：子组件通过 $emit 向父组件抛出触发事件名称（delete）和触发事件的 list 索引值。
+    （3）：父组件通过监听对应事件名称（@delete）触发函数 handleDelete。函数通过子组件抛出的索引值移除对应的 list。
+ -->
+
+<body>
+    <div id="root">
+        <div>
+            <input v-model='inputValue' />
+            <button @click='handleSubmit'>提交</button>
+            <ul>
+                <!-- 父组件监听子组件触发的delete事件，执行自己的handleDelete方法 -->
+                <todo-item v-for="(item, index) in list" :key='index' :content='item' :index='index' @delete='handleDelete'>
+
+                </todo-item>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('todo-item', {
+            props: ['content', 'index'],
+            template: '<li @click="handleClick">{{content}}</li>',
+            methods: {
+                handleClick: function () {
+                    // 发布-订阅
+                    // 当子组件被点击时，通知父组件把数据删除
+                    this.$emit('delete', this.index)
+                }
+            }
+        })
+
+
+        new Vue({
+            el: '#root',
+            data: {
+                inputValue: '',
+                list: []
+            },
+            methods: {
+                handleSubmit: function () {
+                    this.list.push(this.inputValue)
+                    this.inputValue = ''
+                },
+                handleDelete:function(index){
+                    // index为子组件的标，从下标的位置删除一项
+                    this.list.splice(index,1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

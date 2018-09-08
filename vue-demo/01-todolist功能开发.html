@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>简单todolist</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <input v-model='inputValue' />
+            <button @click='handleSubmit'>提交</button>
+            <ul>
+                <li v-for="(item,index) in list">
+                    {{item}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                inputValue: '',
+                list: []
+            },
+            methods: {
+                handleSubmit: function () {
+                    this.list.push(this.inputValue)
+                    this.inputValue = ''
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

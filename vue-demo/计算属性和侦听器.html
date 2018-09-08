@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓：<input v-model="firstName">
+        名：<input v-model="lastName">
+        <div>{{fullName}}</div>
+
+        <label for="">{{count}}</label>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                firstName: '',
+                lastName: '',
+                count: 0
+            },
+            // 一个属性通过其他属性计算而来
+            // 计算属性，只有依赖的属性发生变化的时候才会重新计算，没有发生变化的时候会使用上一次的缓存值做计算
+            computed: {
+                fullName: function () {
+                    return this.firstName + ' ' + this.lastName
+                }
+            },
+            // 定义一个侦听器，监测数据变化或者属性改变，一旦发生变化就执行侦听器中的业务逻辑
+            watch: {
+                fullName: function () {
+                    this.count++
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
