@@ -4,7 +4,7 @@
             type="text"
             class="add-input"
             autofocus="autofocus"
-            placeholder="接下来要做什么？"
+            placeholder="Add note"
             @keyup.enter="addTodo"
         >   
         <Item 

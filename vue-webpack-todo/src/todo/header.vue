@@ -1,6 +1,6 @@
 <template>
   <header class="main-header">
-    <h1>Todo List</h1>
+    <h1>Todo</h1>
   </header>
 </template>
 
@@ -10,8 +10,7 @@
 
     h1 {
         font-size: 100px;
-        color: rgba(175, 47, 47, 0.4);
-        font-weight: 100;
+        color: #ccc;
         margin: 20px;
     }
 }

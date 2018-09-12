@@ -62,6 +62,8 @@ export default {
 .left, .clear, .tabs{
   padding 0 10px
   box-sizing border-box
+  font-weight bold
+  color #A9A9A9 
 }
 .left, .clear{
   width 150px
