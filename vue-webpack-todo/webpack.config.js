@@ -1,6 +1,8 @@
 const path = require("path")
 const HTMLPlugin = require("html-webpack-plugin")
 const webpack = require("webpack")
+// 生产环境，将 css 部分单独打包成静态资源文件
+const ExtractPlugin = require("extract-text-webpack-plugin")
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -8,7 +10,7 @@ const config = {
     target: 'web',
     entry: path.join(__dirname, 'src/index.js'),
     output: {
-        filename: 'bundle.js',
+        filename: 'bundle.[hash:8].js',
         path: path.join(__dirname, 'dist')
     },
     module: {
@@ -19,27 +21,6 @@ const config = {
             {
                 test: /\.jsx$/,
                 loader: 'babel-loader'
-            },
-            {
-                test: /\.css$/,
-                use: [ // 接收一个数组
-                    'style-loader', // 把 css 写到 html 里面需要的 loader
-                    'css-loader', // 处理 css 文件
-                ]
-            },
-            {
-                test: /\.styl/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    },
-                    'stylus-loader'
-                ]
             },
             {
                 test: /\.(jpg|gif|png|jpeg|svg)$/,
@@ -62,9 +43,23 @@ const config = {
         }),
         new HTMLPlugin()
     ]
-}
+} 
 
 if (isDev) {
+    config.module.rules.push({
+        test: /\.styl/,
+        use: [
+            'style-loader',
+            'css-loader',
+            {
+                loader: 'postcss-loader',
+                options: {
+                    sourceMap: true
+                }
+            },
+            'stylus-loader'
+        ]
+    })
     config.devtool = '#cheap-moudle-eval-soucre-map'
     config.devServer = {
         port: 8001,
@@ -78,6 +73,40 @@ if (isDev) {
     config.plugins.push(
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
+    )
+}else {
+    config.entry = {
+        app: path.join(__dirname, 'src/index.js'),
+        vendor: ['vue']
+    }
+    config.output.filename = '[name].[chunkhash:8].js'
+    config.module.rules.push(
+        {
+            test: /\.styl/,
+            use: ExtractPlugin.extract({
+                fallback: 'style-loader',
+                use: [
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    'stylus-loader'
+                ]
+            })
+        }
+    )
+    config.plugins.push(
+        new ExtractPlugin('styles.[contentHash:8].css'),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor'
+        }),
+        // 将 webpack 相关单独打包打一个文件
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'runtime'
+        })
     )
 }
 
