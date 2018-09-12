@@ -19,7 +19,11 @@ export default {
     }
   },
   methods: {
-    deleteTodo() {}
+    deleteTodo() {
+        // 触发一个事件，传给父组件
+        this.$emit('del', this.todo.id)
+
+    }
   }
 };
 </script>
