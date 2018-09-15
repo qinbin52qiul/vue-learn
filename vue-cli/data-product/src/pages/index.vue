@@ -3,16 +3,16 @@
     <div class="index-left">
       <div class="index-left-block">
         <h2>全部产品</h2>
-        <template v-for="(product, index) in productList">
-          <h3 :key="index">{{ product.title }}</h3>
-          <ul :key="index">
+        <div v-for="(product, index) in productList" :key="index">
+          <h3>{{ product.title }}</h3>
+          <ul>
             <li v-for="(item, index) in product.list" :key="index">
               <a :href="item.url">{{ item.name }}</a>
               <span v-if="item.hot" class="hot-tag">HOT</span>
             </li>
           </ul>
-          <div v-if="!product.last" class="hr" :key="index"></div>
-        </template>
+          <div v-if="!product.last" class="hr"></div>
+        </div>
       </div>
       <div class="index-left-block lastest-news">
         <h2>最新消息</h2>
@@ -58,7 +58,8 @@ export default {
   },*/
   methods: {
     doSomethingOnSlideChange(index) {
-      console.log("doSomethingOnSlideChange run!" + index)
+      // 测试从子组件传过来的 index
+      // console.log("doSomethingOnSlideChange run!" + index)
     }
   },
   data() {
