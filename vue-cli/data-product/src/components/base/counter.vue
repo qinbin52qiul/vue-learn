@@ -13,7 +13,7 @@ export default {
   props: {
     max: {
       type: Number,
-      default: 50
+      default: 1000
     },
     min: {
       type: Number,

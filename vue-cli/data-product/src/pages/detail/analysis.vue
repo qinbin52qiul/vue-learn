@@ -55,7 +55,7 @@
       <div class="sales-board-line">
         <div class="sales-board-line-left">&nbsp;</div>
         <div class="sales-board-line-right">
-          <div class="button">
+          <div class="button" @click="showPayDialog">
             立即购买
           </div>
         </div>
@@ -83,6 +83,33 @@
         <li>用户所在地理区域分布状况等</li>
       </ul>
     </div>
+    <my-dialog :is-show="isShowPayDialog" @on-close="hidePayDialog">
+      <table class="buy-dialog-table">
+        <tr>
+          <th>购买数量</th>
+          <th>产品类型</th>
+          <th>有效时间</th>
+          <th>产品版本</th>
+          <th>总价</th>
+        </tr>
+        <tr>
+          <td>{{ buyNum }}</td>
+          <td>{{ buyType.label }}</td>
+          <td>{{ period.label }}</td>
+          <td>
+            <span v-for="(item, index) in versions" :key="index">
+              {{ item.label }}
+            </span>
+          </td>
+          <td>{{ price }}</td>
+        </tr>
+      </table>
+      <h3 class="buy-dialog-title">请选择银行</h3>
+      <bank-chooser  @on-change="onChangeBanks"></bank-chooser>
+      <div class="button buy-dialog-btn">
+        确认购买
+      </div>
+    </my-dialog>
   </div>
 </template>
 
@@ -91,6 +118,8 @@ import VCounter from '../../components/base/counter'
 import VSelection from '../../components/base/selection'
 import VChooser from '../../components/base/chooser'
 import VMulChooser from '../../components/base/multiplyChooser'
+import Dialog from '../../components/base/dialog'
+import BankChooser from '../../components/bankChooser'
 import _ from 'lodash'
 
 export default {
@@ -98,7 +127,9 @@ export default {
     VCounter,
     VSelection,
     VChooser,
-    VMulChooser
+    VMulChooser,
+    MyDialog: Dialog,
+    BankChooser
   },
   data() {
     return {
@@ -173,8 +204,21 @@ export default {
       }
       this.$http.get('http://localhost:3000/getPrice', reqParams)
       .then((res) => {
-        this.price = res.data.amount
+        this.price = res.data.amount * reqParams['buyNumber'] * (reqParams['buyType'] + 0.78) * (reqParams['period'] + 0.52)
+        this.price = this.price.toFixed(2)
       })
+    },
+    showPayDialog() {
+      this.isShowPayDialog = true
+    },
+    hidePayDialog() {
+      this.isShowPayDialog = false
+    },
+    onChangeBanks() {
+
+    },
+    confirmBuy() {
+
     }
   },
   mounted() {
