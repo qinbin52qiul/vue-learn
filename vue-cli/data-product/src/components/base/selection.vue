@@ -38,7 +38,6 @@ export default {
   mounted() {
     // 监听全局 layout 发出的 reset-status 事件
     eventBus.$on('reset-status', () => {
-      console.log(123)
       this.isDrop = false
     })
   },
@@ -46,15 +45,12 @@ export default {
     toggleDrop(event) {
       // 阻止下拉框的事件冒泡，点击完下拉框之后停止向上冒泡
       event.stopPropagation()
-      this.isDrop = !this.isDrop;
-      if (!this.isDrop) {
-        eventBus.$emit('reset-status')
-      }
+      eventBus.$emit('reset-status')
+      this.isDrop = !this.isDrop
     },
     chooseSelection(index) {
       this.nowIndex = index;
       // this.isDrop = false;
-      eventBus.$emit('reset-status')
       this.$emit("on-change", this.selections[this.nowIndex]);
     }
   }
