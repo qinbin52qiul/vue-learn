@@ -106,10 +106,16 @@
       </table>
       <h3 class="buy-dialog-title">请选择银行</h3>
       <bank-chooser  @on-change="onChangeBanks"></bank-chooser>
-      <div class="button buy-dialog-btn">
+      <div class="button buy-dialog-btn" @click="confirmBuy">
         确认购买
       </div>
     </my-dialog>
+    <check-order 
+      :is-show-check-dialog="isShowCheckOrder"
+      :order-id="orderId"
+      @on-close-check-dialog="hideCheckOrder"
+    >
+    </check-order>
   </div>
 </template>
 
@@ -120,6 +126,7 @@ import VChooser from '../../components/base/chooser'
 import VMulChooser from '../../components/base/multiplyChooser'
 import Dialog from '../../components/base/dialog'
 import BankChooser from '../../components/bankChooser'
+import CheckOrder from '../../components/checkOrder'
 import _ from 'lodash'
 
 export default {
@@ -129,7 +136,8 @@ export default {
     VChooser,
     VMulChooser,
     MyDialog: Dialog,
-    BankChooser
+    BankChooser,
+    CheckOrder
   },
   data() {
     return {
@@ -214,11 +222,35 @@ export default {
     hidePayDialog() {
       this.isShowPayDialog = false
     },
-    onChangeBanks() {
-
+    hideCheckErrDialog() {
+      this.isShowErrDialog = false
+    },
+    hideCheckOrder() {
+      this.isShowCheckOrder = false
+    },
+    onChangeBanks(bankObj) {
+      this.bankId = bankObj.id
+      console.log(this.bankId)
     },
     confirmBuy() {
-
+      let buyVersionsArray = _.map(this.versions, (item) => {
+        return item.value
+      })
+      let reqParams = {
+        buyNumber: this.buyNum,
+        buyType: this.buyType.value,
+        period: this.period.value,
+        version: buyVersionsArray.join(',')
+      }
+      this.$http.post('http://localhost:3000/createOrder', reqParams)
+      .then((res) => {
+        this.orderId = res.data.orderId
+        this.isShowCheckOrder = true
+        this.isShowPayDialog = false
+      }, (err) => {
+        this.isShowBuyDialog = false
+        this.isShowErrDialog = true
+      })
     }
   },
   mounted() {
