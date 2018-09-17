@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="clearComponentStatus">
     <div class="app-head">
       <div class="app-head-inner">
         <router-link :to="{path: '/'}">
@@ -46,6 +46,7 @@
 import Diaglog from './base/dialog'
 import LogFrom from './logFrom'
 import RegFrom from './regFrom'
+import { eventBus } from '../eventBus.js'
 
 export default {
   components: {
@@ -81,6 +82,9 @@ export default {
     },
     quit() {
       this.username = ''
+    },
+    clearComponentStatus() {
+      eventBus.$emit('reset-status')
     }
   }
 };
