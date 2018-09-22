@@ -63,13 +63,15 @@
 </template>
 
 <script>
-import VCounter from '../../components/base/counter'
-import VMulChooser from '../../components/base/multiplyChooser'
+import VCounter from '@/components/base/counter'
+import VMulChooser from '@/components/base/multiplyChooser'
+import VChooser from '@/components/base/chooser'
 
 export default {
   components: {
     VCounter,
-    VMulChooser
+    VMulChooser,
+    VChooser
   },
   data() {
     return {
