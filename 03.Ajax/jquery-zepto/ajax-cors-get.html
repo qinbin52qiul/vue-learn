@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+
+        </div>
+    </div>
+
+    <template id="grid-template">
+        <table>
+            <thead>
+                <tr v-for="col in columns">
+                    {{ col | capitalize }}
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(index, entry) in dataList">
+                    <td v-for="col in columns">
+                        {{ entry[col] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <script src="js/vue.js"></script>
+    <script src="js/zepto.js"></script>
+    <script src="js/ajax-helper.js"></script>
+    <script>
+        Vue.component('simple-grid', {
+            template: "#grid-template",
+            props: ['dataList', 'colunms']
+        })
+    </script>
+    <script>
+        var ajaxHelper = new AjaxHelper()
+
+        var demo = new Vue({
+            el: "#app",
+            data: {
+                gridColunms: ['customerID', 'companyName', 'contactName', 'phone'],
+                gridData: [],
+                apiUrl: 'http://211.149.193.19:8080/api/customers'
+            },
+            ready: function () {
+                this.getCustomers()
+            },
+            methods: {
+                getCustomers: function () {
+                    // 定义变量，让它指向 this，this 是当前的 Vue 实例
+                    var vm = this,
+                        callback = function (data) {
+                            // 由于函数的作用于，这里不能用this
+                            vm.$set('gridData', data)
+                        }
+                    ajaxHelper.get(vm.apiUrl, null, callback)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

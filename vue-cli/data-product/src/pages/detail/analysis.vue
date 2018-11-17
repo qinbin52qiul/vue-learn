@@ -110,7 +110,7 @@
         确认购买
       </div>
     </my-dialog>
-    <check-order 
+    <check-order
       :is-show-check-dialog="isShowCheckOrder"
       :order-id="orderId"
       @on-close-check-dialog="hideCheckOrder"
@@ -212,6 +212,7 @@ export default {
       }
       this.$http.get('http://localhost:3000/getPrice', reqParams)
       .then((res) => {
+        console.log('qinbin',reqParams['buyNumber']);
         this.price = res.data.amount * reqParams['buyNumber'] * (reqParams['buyType'] + 0.78) * (reqParams['period'] + 0.52)
         this.price = this.price.toFixed(2)
       })
