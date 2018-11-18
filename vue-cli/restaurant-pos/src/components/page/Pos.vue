@@ -11,15 +11,15 @@
                 <el-table-column prop="price" label="金额" width="70"></el-table-column>
                 <el-table-column label="操作" width="90" fixed="right">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small">增加</el-button>
-                    <el-button type="text" size="small">删除</el-button>
+                    <el-button type="text" size="small" @click="addOrderList(scope.row)">增加</el-button>
+                    <el-button type="text" size="small" @click="delSingleGoods(scope.row)">删除</el-button>
                   </template>
                 </el-table-column>
               </el-table>
               <div class="div-btn">
                 <el-button type="warning">挂单</el-button>
-                <el-button type="danger">删除</el-button>
-                <el-button type="success">结账</el-button>
+                <el-button type="danger" @click="delAllGoods">删除</el-button>
+                <el-button type="success" @click="checkout">结账</el-button>
               </div>
             </el-tab-pane>
             <el-tab-pane label="挂单">
@@ -104,12 +104,13 @@ export default {
   name: 'Pos',
   data () {
     return {
-      tableData: [],
-      oftenGoods: [],
-      type0Goods: [],
+      tableData: [], // 已选择商品
+      oftenGoods: [], // 常用商品
+      type0Goods: [], // 分类0 商品
       type1Goods: [],
       type2Goods: [],
-      type3Goods: []
+      type3Goods: [],
+      goodsCount: [] // 已选择商品的数量
     }
   },
   created () {
@@ -175,8 +176,6 @@ export default {
       const { columns, data } = param
       // 各分类总计
       const sums = []
-      // 存放每种商品的数量
-      let count = []
       columns.forEach((column, index) => {
         const values = data.map(item => Number(item[column.property]))
         if (index === 0) {
@@ -185,7 +184,7 @@ export default {
         } else if (index === 1) {
           if (!values.every(value => isNaN(value))) {
             for (let v in values)
-              count[v] = values[v]
+              this.goodsCount[v] = values[v]
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr)
               if (!isNaN(value)) {
@@ -196,7 +195,6 @@ export default {
             }, 0)
           }
         } else if (index === 2) {
-          console.log(count)
           if (!values.every(value => isNaN(value))) {
             sums[index] = 0
             /* sums[index] = values.map((prev, curr) => {
@@ -208,7 +206,7 @@ export default {
               }
             }, 0) */
             for (let v in values) {
-              sums[index] += values[v] * count[v]
+              sums[index] += values[v] * this.goodsCount[v]
             }
             sums[index] += ' 元'
           }
@@ -217,6 +215,25 @@ export default {
         }
       })
       return sums
+    },
+    // 删除单个商品
+    delSingleGoods (goods) {
+      this.tableData = this.tableData.filter(o => o.goodsId !== goods.goodsId)
+    },
+    // 删除所有商品
+    delAllGoods () {
+      this.tableData = []
+    },
+    // 模拟结账
+    checkout () {
+      if(this.goodsCount.toString() !== "") {
+        this.tableData = []
+        this.$message({
+          type: 'success',
+          // showClose: true,
+          message: '结账成功，今日非常 nice'
+        })
+      }
     }
   }
 }
