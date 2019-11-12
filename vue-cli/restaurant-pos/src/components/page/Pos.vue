@@ -183,8 +183,9 @@ export default {
           return null
         } else if (index === 1) {
           if (!values.every(value => isNaN(value))) {
-            for (let v in values)
+            for (let v in values) {
               this.goodsCount[v] = values[v]
+            }
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr)
               if (!isNaN(value)) {
@@ -226,7 +227,7 @@ export default {
     },
     // 模拟结账
     checkout () {
-      if(this.goodsCount.toString() !== "") {
+      if (this.goodsCount.toString() !== '') {
         this.tableData = []
         this.$message({
           type: 'success',

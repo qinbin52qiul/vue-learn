@@ -8,7 +8,7 @@
     <title>step05-修改数据新建功能</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* 
+        /*
 		* 由于IE不支持<template>标签，所以template标签中的内容在IE下会直接显示出来。
 		* 将模板设为隐藏即可解决这个问题，template标签各浏览器支持请参考：http://caniuse.com/#feat=template
 		*/
@@ -161,7 +161,7 @@
                     // 广播事件，传入参数 true 表示显示对话框
                     this.$broadcast('showDialog', true)
                 },
-                // 弹出修改数据的对话框时，使用对象的深拷贝                
+                // 弹出修改数据的对话框时，使用对象的深拷贝
                 initItemForUpdate: function (p) {
                     var c = c || {};
                     for (var i in p) {
